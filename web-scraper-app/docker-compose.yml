@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  engine:
+    build: ./engine
+    env_file:
+      - .env
+    restart: always
+
+  web:
+    build: ./web
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    depends_on:
+      - engine
+    # Aby włączyć hot-reloading dla Flask podczas developmentu, odkomentuj poniższe:
+    # environment:
+    #   - FLASK_ENV=development
+    #   - FLASK_APP=app.py
+    # volumes:
+    #   - ./web:/app

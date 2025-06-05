@@ -1,0 +1,4 @@
+aiohttp
+beautifulsoup4
+pymongo[srv]
+python-dotenv

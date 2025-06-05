@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Scraper Pro</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f2f7; /* Jasny błękit tła */
+            color: #333;
+            line-height: 1.6;
+        }
+        .banner {
+            background-color: #0077cc; /* Ciemniejszy niebieski dla banera */
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+            border-bottom: 5px solid #005fa3;
+        }
+        .banner h1 {
+            margin: 0;
+            font-size: 2.5em;
+            letter-spacing: 1px;
+        }
+        .container {
+            max-width: 960px;
+            margin: 30px auto;
+            padding: 25px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .form-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"] {
+            width: calc(100% - 24px); /* Dopasowanie do paddingu */
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        input[type="submit"] {
+            padding: 12px 25px;
+            background-color: #28a745; /* Zielony dla przycisku akcji */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+        h2.results-header {
+            color: #333;
+            border-bottom: 2px solid #0077cc;
+            padding-bottom: 10px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Responsywna siatka */
+            gap: 20px;
+        }
+        .item {
+            border: 1px solid #d1e7dd; /* Jasnozielona ramka */
+            padding: 20px;
+            background-color: #f0fff4; /* Bardzo jasny zielony/miętowy */
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .item-header { /* Dla tytułu i URL */
+            border-bottom: 1px dashed #b8d8c3;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+        }
+        .item-header h3 {
+            margin-top: 0;
+            margin-bottom: 5px;
+            color: #155724; /* Ciemnozielony */
+            font-size: 1.4em;
+        }
+        .item-header .url-link {
+            font-size: 0.9em;
+            word-break: break-all; /* <--- DODANE TUTAJ: Łamanie długich URLi strony */
+        }
+        .item p {
+            margin-bottom: 10px;
+            word-break: break-word; /* <--- OGÓLNE łamanie słów dla paragrafów, jeśli potrzebne */
+        }
+        .item strong {
+            color: #444;
+            display: inline-block;
+            min-width: 120px; /* Aby etykiety miały podobną szerokość */
+        }
+        .item ul {
+            list-style-type: none; /* Usunięcie kropek */
+            padding-left: 0;
+            margin-top: 5px;
+        }
+        .item ul li {
+            background-color: #e6f7ec; /* Jaśniejszy zielony dla elementów listy */
+            padding: 5px 8px;
+            margin-bottom: 5px;
+            border-radius: 3px;
+            font-size: 0.95em;
+            word-break: break-all; /* <--- DODANE TUTAJ: Łamanie długich linków w liście */
+        }
+        .item ul li a {
+            color: #0056b3;
+            /* word-break: break-all; - można też tutaj, jeśli sam <a> jest problemem, ale na <li> zwykle wystarczy */
+        }
+        .no-data {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+            font-style: italic;
+        }
+        a {
+            color: #0069d9;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <h1>Web Scraper Pro 🚀</h1>
+    </div>
+
+    <div class="container">
+        <div class="form-section">
+            <form method="POST" action="{{ url_for('index') }}">
+                <div class="form-group">
+                    <label for="url_to_scrape">Wprowadź URL strony do zescrapowania:</label>
+                    <input type="text" id="url_to_scrape" name="url_to_scrape" placeholder="np. https://books.toscrape.com/" required>
+                </div>
+                <input type="submit" value="Scrapuj Stronę">
+            </form>
+        </div>
+
+        <h2 class="results-header">Zescrapowane Dane (ostatnie 50)</h2>
+        {% if items %}
+            <div class="results-grid">
+                {% for item in items %}
+                    <div class="item">
+                        <div class="item-header">
+                            {% if item.title %}
+                                <p><strong>Tytuł:</strong> {{ item.title | default('Brak tytułu') }}</p>
+                            {% endif %}
+                            {% if item.url %}
+                                <p><strong>URL:</strong> <a href="{{ item.url }}" target="_blank" class="url-link">{{ item.url }}</a></p>
+                            {% endif %}
+                        </div>
+                        
+                        {% if item.emails %}
+                            <p><strong>Emaile:</strong> {{ item.emails | join(', ') }}</p>
+                        {% endif %}
+
+                        {% if item.links %}
+                            <p><strong>Przykładowe linki:</strong></p>
+                            <ul>
+                            {% for link_info in item.links %}
+                                <li><a href="{{ link_info.href }}" target="_blank">{{ link_info.href }}</a><br><small>(Tekst: {{ link_info.text | default('Brak tekstu') }})</small></li>
+                            {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if item.h1_headings %}
+                            <p><strong>Nagłówki H1:</strong> {{ item.h1_headings | join('; ') }}</p>
+                        {% endif %}
+                        
+                        {% if item.image_count is defined %}
+                            <p><strong>Liczba obrazków:</strong> {{ item.image_count }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="no-data">Brak zescrapowanych danych. Dodaj URL powyżej, aby rozpocząć!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
