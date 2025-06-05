@@ -1,4 +1,4 @@
-# Przetwarzanie równoległe i rozproszone projetk
+# Przetwarzanie równoległe i rozproszone projekt
 Ciesielski Syzmon 21223
 Błażko Jakub 21215
 
@@ -52,3 +52,6 @@ Edytuj
 http://localhost:5000
 
 ---
+
+Uwaga dotycząca pliku .env
+Plik .env, zawierający dane konfiguracyjne połączenia z bazą danych MongoDB (np. URI, nazwę bazy, port), nie został dołączony do repozytorium ze względów bezpieczeństwa oraz braku możliwości jego automatycznego zrzutu.
