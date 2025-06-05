@@ -7,27 +7,7 @@ Błażko Jakub 21215
 **Web Scraper App** to rozproszona aplikacja służąca do automatycznego pobierania i selekcji danych z witryn internetowych według zdefiniowanego profilu. Projekt wspiera przetwarzanie równoległe, parsowanie z użyciem BeautifulSoup oraz zapis danych do MongoDB. Aplikacja składa się z modułu silnika (`engine`) oraz interfejsu webowego (`web`).
 
 ---
-
-## 📁 Struktura projektu
-
-web-scraper-app/
-├── engine/ # Moduł do pobierania i analizy danych
-│ ├── main.py
-│ ├── parser.py
-│ ├── scraper.py
-│ ├── Dockerfile
-│ └── requirements.txt
-│
-├── web/ # Moduł interfejsu webowego (Flask)
-│ ├── app.py
-│ ├── templates/
-│ │ └── index.html
-│ ├── Dockerfile
-│ ├── requirements.txt
-│ └── README.txt
-│
-├── docker-compose.yml # Plik do uruchamiania kontenerów
-└── requirements.txt # Wymagania ogólne
+![image](https://github.com/user-attachments/assets/acfb1447-bb89-44a4-bfc3-712465de3d28)
 
 
 
