@@ -1,5 +1,6 @@
 # Przetwarzanie równoległe i rozproszone projekt
 Ciesielski Syzmon 21223
+
 Błażko Jakub 21215
 
 # 🕷️ Web Scraper App
